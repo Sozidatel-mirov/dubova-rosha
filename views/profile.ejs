@@ -1,0 +1,123 @@
+<%- include('partials/header') %>
+
+<main>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>Личный кабинет</h2>
+            <div class="profile-info">
+                <div class="info-card">
+                    <strong>Имя:</strong> <%= user.name %>
+                </div>
+                <div class="info-card">
+                    <strong>Email:</strong> <%= user.email %>
+                </div>
+                <div class="info-card">
+                    <strong>Телефон:</strong> <%= user.phone %>
+                </div>
+            </div>
+        </div>
+        
+       <% if (user.role === 'admin') { %>
+    <div class="admin-panel">
+        <div class="admin-quick-links" style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+            <a href="/admin/dashboard" class="btn btn-gold" style="background: #ffd166; color: #2d2d2d;">
+                Перейти в админ-панель
+            </a>
+            <a href="/admin/rooms" class="btn btn-outline">Управление номерами</a>
+            <a href="/admin/services" class="btn btn-outline">Управление услугами</a>
+            <a href="/admin/doctors" class="btn btn-outline">Управление врачами</a>
+            <a href="/admin/gallery" class="btn btn-outline">Управление галереей</a>
+            <a href="/admin/bookings" class="btn btn-outline">Управление бронированиями</a>
+        </div>
+        <hr style="margin: 1rem 0;">
+    </div>
+<% } %>
+<% if (user.role === 'doctor') { %>
+    <div class="doctor-panel" style="margin-bottom: 1rem;">
+        <a href="/doctor/dashboard" class="btn btn-gold" style="background: #ffd166;">Перейти в панель врача</a>
+    </div>
+<% } %>
+        
+        <h3>Мои бронирования</h3>
+        <div class="bookings-list">
+            <% if (bookings && bookings.length) { %>
+                <% bookings.forEach(booking => { %>
+                    <div class="booking-item">
+                        <div class="booking-info">
+                            <h4>Бронирование</h4>
+                            <p><strong>Номер:</strong> <%= booking.Room ? booking.Room.name : 'Не указан' %></p>
+                            <p><strong>Даты:</strong> <%= new Date(booking.checkIn).toLocaleDateString() %> - <%= new Date(booking.checkOut).toLocaleDateString() %></p>
+                            <p><strong>Сумма:</strong> <%= booking.totalPrice %>₽</p>
+                            <% if (booking.notes) { %>
+                                <p><strong>Пожелания:</strong> <%= booking.notes %></p>
+                            <% } %>
+                        </div>
+                        <div>
+                            <span class="booking-status status-<%= booking.status %>">
+                                <% if (booking.status === 'pending') { %>Ожидает подтверждения<% } %>
+                                <% if (booking.status === 'confirmed') { %>Подтверждено<% } %>
+                                <% if (booking.status === 'cancelled') { %>Отменено<% } %>
+                            </span>
+                            <% if (booking.status === 'pending') { %>
+                                <form action="/booking/cancel/<%= booking.id %>" method="POST" style="margin-top: 0.5rem;">
+                                    <button type="submit" class="btn btn-outline" style="padding: 0.3rem 1rem; font-size: 0.85rem;">Отменить</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="booking-item" style="text-align: center;">
+                    <p>У вас пока нет бронирований</p>
+                    <a href="/rooms" class="btn btn-primary" style="margin-top: 1rem;">Забронировать номер</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</main>
+
+<style>
+    .admin-panel {
+        margin-bottom: 2rem;
+    }
+    
+    .booking-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn-success:hover {
+        background: #218838 !important;
+    }
+    
+    .btn-danger:hover {
+        background: #2c6e49 !important;
+    }
+    
+    .btn-info:hover {
+        background: #2c6e49 !important;
+    }
+    
+    hr {
+        border: none;
+        border-top: 2px solid #eee;
+        margin: 2rem 0;
+    }
+    
+    @media (max-width: 768px) {
+        .booking-actions {
+            flex-direction: column;
+        }
+        
+        .booking-actions form {
+            width: 100%;
+        }
+        
+        .booking-actions button {
+            width: 100%;
+        }
+    }
+</style>
+
+<%- include('partials/footer') %>

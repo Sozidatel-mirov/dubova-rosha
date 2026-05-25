@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-dark)); margin-top: 150px;">
+            <h1>Наши услуги</h1>
+            <p>Комплексный подход к восстановлению здоровья</p>
+            <% if (user && user.role === 'admin') { %>
+                <a href="/admin/services" class="btn btn-gold" style="margin-top: 1rem;">Редактировать услуги</a>
+            <% } %>
+        </div>
+
+        <section class="services" style="padding: 2rem 0;">
+            <div class="services-container">
+                <% if (services && services.length) { %>
+                    <% services.forEach(service => { %>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <img src="<%= service.image %>" alt="">
+                            </div>
+                            <h3><%= service.name %></h3>
+                            <p><%= service.description %></p>
+                            <div class="service-price"><%= service.price %>₽</div>
+                            <div class="service-duration" style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">⏱️ <%= service.duration %></div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>Услуги временно недоступны</p>
+                <% } %>
+            </div>
+        </section>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

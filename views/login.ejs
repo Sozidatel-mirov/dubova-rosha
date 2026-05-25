@@ -1,0 +1,101 @@
+<%- include('partials/header') %>
+<style>
+    .main-content {
+    position: relative;
+    z-index: 1;
+}
+
+
+</style>
+<main class="main-content">
+    <div class="auth-container" style="background-color: rgba(255, 0, 0, 0);">
+        <div class="auth-box">
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTab">Вход</button>
+                <button class="auth-tab" id="registerTab">Регистрация</button>
+            </div>
+            
+            <div id="loginForm" class="auth-form">
+                <form action="/auth/login" method="POST">
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Пароль" required>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox" name="remember" id="remember">
+                        <label for="remember">Запомнить меня</label>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#">Забыли пароль?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
+            </div>
+            
+            <div id="registerForm" class="auth-form" style="display: none;">
+                <form action="/auth/register" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Телефон" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="regPassword" name="password" placeholder="Пароль" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="regConfirmPassword" name="confirmPassword" placeholder="Подтвердите пароль" required>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <label for="agreeTerms">Я согласен на обработку персональных данных</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    
+    if (loginTab && registerTab) {
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        });
+        
+        registerTab.addEventListener('click', () => {
+            loginTab.classList.remove('active');
+            registerTab.classList.add('active');
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        });
+    }
+    
+    const regPassword = document.getElementById('regPassword');
+    const regConfirmPassword = document.getElementById('regConfirmPassword');
+    
+    if (regConfirmPassword) {
+        regConfirmPassword.addEventListener('input', () => {
+            if (regPassword.value !== regConfirmPassword.value) {
+                regConfirmPassword.setCustomValidity('Пароли не совпадают');
+            } else {
+                regConfirmPassword.setCustomValidity('');
+            }
+        });
+    }
+</script>
+
+<%- include('partials/footer') %>

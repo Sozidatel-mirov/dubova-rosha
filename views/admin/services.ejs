@@ -1,0 +1,144 @@
+<%- include('../partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, #2c6e49, #1e4a32);">
+            <h2>Управление услугами</h2>
+            <p>Добавление, редактирование и удаление услуг санатория</p>
+            <a href="/services" class="btn btn-gold" style="margin-top: 1rem;">Вернуться к списку услуг</a>
+        </div>
+
+        <!-- Форма добавления новой услуги -->
+        <div class="admin-form" style="background: var(--white); padding: 1.5rem; border-radius: 20px; margin-bottom: 2rem; box-shadow: var(--shadow);">
+            <h3>Добавить новую услугу</h3>
+            <form action="/admin/services/add" method="POST" enctype="multipart/form-data" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label>Название услуги *</label>
+                    <input type="text" name="name" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Категория</label>
+                    <select name="category" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                        <option value="medical">Медицинская</option>
+                        <option value="wellness">Оздоровительная</option>
+                        <option value="spa">SPA</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Тип оплаты</label>
+                    <select name="billingType" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                        <option value="daily">Ежедневно (за каждый день)</option>
+                        <option value="once">Однократно (за всё бронирование)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Цена (₽) *</label>
+                    <input type="number" name="price" step="100" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Длительность</label>
+                    <input type="text" name="duration" placeholder="например: 30 мин" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Изображение</label>
+                    <input type="file" name="image" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>Описание</label>
+                    <textarea name="description" rows="2" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;"></textarea>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Добавить услугу</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Таблица всех услуг -->
+        <h3>Список услуг</h3>
+        <div class="services-table" style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow);">
+                <thead style="background: #2c6e49; color: white;">
+                    <tr>
+                        <th style="padding: 12px;">ID</th>
+                        <th style="padding: 12px;">Изображение</th>
+                        <th style="padding: 12px;">Название</th>
+                        <th style="padding: 12px;">Категория</th>
+                        <th style="padding: 12px;">Тип оплаты</th>
+                        <th style="padding: 12px;">Цена</th>
+                        <th style="padding: 12px;">Длительность</th>
+                        <th style="padding: 12px;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (allServices && allServices.length) { %>
+                        <% allServices.forEach(service => { %>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <form action="/admin/services/edit/<%= service.id %>" method="POST" enctype="multipart/form-data" style="display: contents;">
+                                    <td style="padding: 12px;"><%= service.id %></td>
+                                    <td style="padding: 12px;">
+                                        <% if (service.image) { %>
+                                            <img src="<%= service.image %>" alt="<%= service.name %>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                                        <% } else { %>
+                                            <span style="color: #999;">Нет фото</span>
+                                        <% } %>
+                                        <input type="file" name="image" accept="image/*" style="margin-top: 5px; font-size: 0.7rem;">
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <input type="text" name="name" value="<%= service.name %>" style="width: 150px; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                        <textarea name="description" style="display: none;"><%= service.description || '' %></textarea>
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <select name="category" style="padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                            <option value="medical" <%= service.category === 'medical' ? 'selected' : '' %>>Медицинская</option>
+                                            <option value="wellness" <%= service.category === 'wellness' ? 'selected' : '' %>>Оздоровительная</option>
+                                            <option value="spa" <%= service.category === 'spa' ? 'selected' : '' %>>SPA</option>
+                                        </select>
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <select name="billingType" style="padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                            <option value="daily" <%= service.billingType === 'daily' ? 'selected' : '' %>>Ежедневно</option>
+                                            <option value="once" <%= service.billingType === 'once' ? 'selected' : '' %>>Однократно</option>
+                                        </select>
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <input type="number" name="price" value="<%= service.price %>" step="100" style="width: 80px; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <input type="text" name="duration" value="<%= service.duration || '' %>" style="width: 80px; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <button type="submit" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-right: 5px;">Сохранить</button>
+                                </form>
+                                <form action="/admin/services/delete/<%= service.id %>" method="POST" style="display: inline-block;">
+                                    <button type="submit" onclick="return confirm('Удалить услугу?')" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Удалить</button>
+                                </form>
+                                    </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr><td colspan="8" style="padding: 20px; text-align: center;">Нет услуг</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<style>
+    .admin-form input, .admin-form select, .admin-form textarea {
+        transition: all 0.3s ease;
+    }
+    
+    .admin-form input:focus, .admin-form select:focus, .admin-form textarea:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(44, 110, 73, 0.1);
+    }
+    
+    .services-table table {
+        border-collapse: collapse;
+    }
+    
+</style>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-dark)); margin-top: 150px;">
+            <h1>Наши врачи</h1>
+            <p>Команда профессионалов с многолетним опытом</p>
+            <% if (user && user.role === 'admin') { %>
+                <a href="/admin/doctors" class="btn btn-gold" style="margin-top: 1rem;">Редактировать врачей</a>
+            <% } %>
+        </div>
+
+        <section class="doctors" style="padding: 2rem 0;">
+            <div class="doctors-container">
+                <% if (doctors && doctors.length) { %>
+                    <% doctors.forEach(doctor => { %>
+                        <div class="doctor-card">
+                            <h3><%= doctor.name %></h3>
+                            <div class="doctor-position"><%= doctor.position %></div>
+                            <div class="doctor-qualification">
+                                <% if (doctor.qualification) { %>
+                                    <%= doctor.qualification %>
+                                <% } %>
+                                <% if (doctor.experience) { %>
+                                    <br>Стаж: <%= doctor.experience %> лет
+                                <% } %>
+                            </div>
+                            <% if (doctor.description) { %>
+                                <div class="doctor-description" style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                                    <%= doctor.description %>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>Информация о врачах временно недоступна</p>
+                <% } %>
+            </div>
+        </section>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

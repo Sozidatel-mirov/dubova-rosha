@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-dark)); margin-top: 150px;">
+            <h1>Контакты</h1>
+            <p>Как нас найти и связаться с нами</p>
+        </div>
+
+        <section class="contact" style="padding: 2rem 0;">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Контактная информация</h3>
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div>Оренбургская область,<br>пос. Лесной, ул. Санаторная, 15</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div>+7 (800) 123-45-67<br>+7 (3532) 12-34-56</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">✉️</div>
+                        <div>info@zdorovie.ru<br>booking@zdorovie.ru</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">⏰</div>
+                        <div>Режим работы:<br>Ежедневно, круглосуточно</div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Напишите нам</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="Ваше имя" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" placeholder="Телефон" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Сообщение" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+    document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Сообщение отправлено! Мы свяжемся с вами в ближайшее время.');
+        this.reset();
+    });
+</script>
+
+<%- include('partials/footer') %>

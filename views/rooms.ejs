@@ -1,0 +1,126 @@
+<%- include('partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-dark)); margin-top: 150px;">
+            <h1>Наши номера</h1>
+            <p>Выберите идеальный вариант для комфортного отдыха и лечения</p>
+            <% if (user && user.role === 'admin') { %>
+                <a href="/admin/rooms" class="btn btn-gold" style="margin-top: 1rem;">Редактировать номера</a>
+            <% } %>
+        </div>
+
+        <section class="rooms" style="padding: 2rem 0;">
+            <div class="rooms-container">
+                <% if (rooms && rooms.length) { %>
+                    <% rooms.forEach(room => { %>
+                        <div class="room-card">
+                            <div class="room-image" onclick="window.location.href='/rooms/<%= room.id %>'" style="cursor: pointer;">
+                                <% if (room.image) { %>
+                                    <img src="<%= room.image %>" alt="<%= room.name %>" style="width: 100%; height: 100%; object-fit: cover;">
+                                <% } else { %>
+                                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2c6e49, #1e4a32); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">🏨</div>
+                                <% } %>
+                            </div>
+                            <div class="room-info">
+                                <h3 onclick="window.location.href='/rooms/<%= room.id %>'" style="cursor: pointer;"><%= room.name %></h3>
+                                <p onclick="window.location.href='/rooms/<%= room.id %>'" style="cursor: pointer;"><%= room.description %></p>
+                                <div class="room-price" onclick="window.location.href='/rooms/<%= room.id %>'" style="cursor: pointer;"><%= room.price %>₽ <span>/ сутки</span></div>
+                                <div class="room-amenities" onclick="window.location.href='/rooms/<%= room.id %>'" style="cursor: pointer;">
+                                    <span>до <%= room.capacity %> гостей</span>
+                                    <% if (room.type === 'standard') { %>
+                                        <span>Стандарт</span>
+                                    <% } else if (room.type === 'improved') { %>
+                                        <span>Улучшенный</span>
+                                    <% } else { %>
+                                        <span>Люкс</span>
+                                    <% } %>
+                                </div>
+                                <a href="/booking/<%= room.id %>" class="btn btn-primary" style="width: 100%; text-align: center; display: block; margin-top: 1rem;">
+                                    Забронировать
+                                </a>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>Номера временно недоступны</p>
+                <% } %>
+            </div>
+        </section>
+    </div>
+</main>
+
+<style>
+    .rooms-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+    
+    .room-card {
+        background: var(--white);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+    }
+    
+    .room-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .room-image {
+        height: 250px;
+        overflow: hidden;
+    }
+    
+    .room-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .room-card:hover .room-image img {
+        transform: scale(1.05);
+    }
+    
+    .room-info {
+        padding: 1.5rem;
+    }
+    
+    .room-info h3 {
+        margin-bottom: 0.5rem;
+    }
+    
+    .room-price {
+        color: var(--primary-green);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 1rem 0;
+    }
+    
+    .room-price span {
+        font-size: 1rem;
+        font-weight: 400;
+        color: var(--text-light);
+    }
+    
+    .room-amenities {
+        display: flex;
+        gap: 1rem;
+        margin: 1rem 0;
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+    
+    .btn-primary {
+        width: 100%;
+        margin-top: 1rem;
+        text-align: center;
+        display: block;
+    }
+</style>
+
+<%- include('partials/footer') %>

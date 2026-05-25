@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title><%= title %> | Санаторий «Здоровье»</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <h2><a href="/">Санаторий «Здоровье»</a></h2>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            
+            <div class="mobile-menu-content" id="mobileMenuContent">
+                <nav class="nav-menu">
+                    <a href="/">Главная</a>
+                    <a href="/about" style="width: 50px;">О нас</a>
+                    <a href="/services">Услуги</a>
+                    <a href="/rooms">Номера</a>
+                    <a href="/doctors">Врачи</a>
+                    <a href="/gallery">Галерея</a>
+                    <a href="/contacts">Контакты</a>
+                </nav>
+                
+                <div class="auth-buttons">
+                    <% if (user) { %>
+                        <div class="user-menu">
+                            <span class="user-name"><%= user.name %></span>
+                            <a href="/profile" class="btn btn-outline">Личный кабинет</a>
+                            <a href="/auth/logout" class="btn btn-outline">Выйти</a>
+                        </div>
+                    <% } else { %>
+                        <a href="/login" class="btn btn-primary">Вход</a>
+                        <a href="/register" class="btn btn-primary">Регистрация</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Контейнер для уведомлений в правом нижнем углу -->
+    <div id="notificationContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; max-width: 350px;"></div>
+
+    <script>
+        // Функция для показа уведомления
+        function showNotification(message, type) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            
+            let bgColor, textColor, icon;
+            if (type === 'success') {
+                bgColor = '#d4edda';
+                textColor = '#155724';
+                icon = '✅';
+            } else if (type === 'error') {
+                bgColor = '#f8d7da';
+                textColor = '#721c24';
+                icon = '❌';
+            } else {
+                bgColor = '#d1ecf1';
+                textColor = '#0c5460';
+                icon = 'ℹ️';
+            }
+            
+            notification.style.cssText = `
+                background: ${bgColor};
+                color: ${textColor};
+                padding: 12px 16px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                font-size: 14px;
+                animation: slideIn 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+                border-left: 4px solid ${textColor};
+            `;
+            
+            notification.innerHTML = `${icon} <span style="flex: 1;">${message}</span> <span style="font-size: 18px; opacity: 0.6;">&times;</span>`;
+            
+            notification.addEventListener('click', () => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            });
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+    <% if (!user || user.role !== 'admin') { %>
+        <% if (error) { %>
+            <script>showNotification('<%= error %>', 'error');</script>
+        <% } %>
+        <% if (success) { %>
+            <script>showNotification('<%= success %>', 'success');</script>
+        <% } %>
+        <% if (message) { %>
+            <script>showNotification('<%= message %>', 'info');</script>
+        <% } %>
+    <% } %>
+
+<script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuContent = document.getElementById('mobileMenuContent');
+    
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenuContent.classList.toggle('active');
+            this.textContent = mobileMenuContent.classList.contains('active') ? '✕' : '☰';
+            if (mobileMenuContent.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    
+    document.querySelectorAll('.nav-menu a, .auth-buttons a, .user-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuContent.classList.remove('active');
+            if (mobileMenuBtn) mobileMenuBtn.textContent = '☰';
+            document.body.style.overflow = '';
+        });
+    });
+</script>
+<script src="/js/ai-chat-widget.js"></script>

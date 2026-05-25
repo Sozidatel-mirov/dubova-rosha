@@ -1,0 +1,121 @@
+<mxfile host="app.diagrams.net" agent="5.0">
+  <diagram name="ER-диаграмма" id="er-diagram">
+    <mxGraphModel dx="1438" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="user" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;" value="ПОЛЬЗОВАТЕЛЬ (User)" vertex="1">
+          <mxGeometry height="184" width="220" x="80" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="user_id" parent="user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="(PK) id (INTEGER)" vertex="1">
+          <mxGeometry height="22" width="220" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="user_name" parent="user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value=" name (STRING)" vertex="1">
+          <mxGeometry height="22" width="220" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="user_email" parent="user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="email (STRING, UK)" vertex="1">
+          <mxGeometry height="22" width="220" y="74" as="geometry" />
+        </mxCell>
+        <mxCell id="user_phone" parent="user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="phone (STRING)" vertex="1">
+          <mxGeometry height="22" width="220" y="96" as="geometry" />
+        </mxCell>
+        <mxCell id="user_password" parent="user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="password (STRING)" vertex="1">
+          <mxGeometry height="22" width="220" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="user_role" parent="user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="role (ENUM: user/admin)" vertex="1">
+          <mxGeometry height="22" width="220" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="user_created" parent="user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="createdAt (DATETIME)" vertex="1">
+          <mxGeometry height="22" width="220" y="162" as="geometry" />
+        </mxCell>
+        <mxCell id="room" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;" value="НОМЕР (Room)" vertex="1">
+          <mxGeometry height="184" width="220" x="650" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="room_id" parent="room" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="(PK) id (INTEGER)" vertex="1">
+          <mxGeometry height="22" width="220" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="room_name" parent="room" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="name (STRING)" vertex="1">
+          <mxGeometry height="22" width="220" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="room_type" parent="room" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="type (ENUM: standard/improved/luxury)" vertex="1">
+          <mxGeometry height="22" width="220" y="74" as="geometry" />
+        </mxCell>
+        <mxCell id="room_price" parent="room" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="price (FLOAT)" vertex="1">
+          <mxGeometry height="22" width="220" y="96" as="geometry" />
+        </mxCell>
+        <mxCell id="room_capacity" parent="room" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="capacity (INTEGER)" vertex="1">
+          <mxGeometry height="22" width="220" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="room_amenities" parent="room" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="amenities (TEXT)" vertex="1">
+          <mxGeometry height="22" width="220" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="room_available" parent="room" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="isAvailable (BOOLEAN)" vertex="1">
+          <mxGeometry height="22" width="220" y="162" as="geometry" />
+        </mxCell>
+        <mxCell id="booking" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;" value="БРОНИРОВАНИЕ (Booking)" vertex="1">
+          <mxGeometry height="206" width="240" x="400" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="booking_id" parent="booking" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="(PK) id (INTEGER)" vertex="1">
+          <mxGeometry height="22" width="240" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="booking_userid" parent="booking" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="(FK) userId (INTEGER)" vertex="1">
+          <mxGeometry height="22" width="240" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="booking_roomid" parent="booking" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="(FK) roomId (INTEGER)" vertex="1">
+          <mxGeometry height="22" width="240" y="74" as="geometry" />
+        </mxCell>
+        <mxCell id="booking_checkin" parent="booking" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="checkIn (DATE)" vertex="1">
+          <mxGeometry height="22" width="240" y="96" as="geometry" />
+        </mxCell>
+        <mxCell id="booking_checkout" parent="booking" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="checkOut (DATE)" vertex="1">
+          <mxGeometry height="22" width="240" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="booking_guests" parent="booking" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="guests (INTEGER)" vertex="1">
+          <mxGeometry height="22" width="240" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="booking_total" parent="booking" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="totalPrice (FLOAT)" vertex="1">
+          <mxGeometry height="22" width="240" y="162" as="geometry" />
+        </mxCell>
+        <mxCell id="booking_status" parent="booking" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="status (ENUM: pending/confirmed/cancelled/completed)" vertex="1">
+          <mxGeometry height="22" width="240" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="service" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;" value="УСЛУГА (Service)" vertex="1">
+          <mxGeometry height="140" width="220" x="680" y="433" as="geometry" />
+        </mxCell>
+        <mxCell id="service_id" parent="service" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="(PK) id (INTEGER)" vertex="1">
+          <mxGeometry height="22" width="220" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="service_name" parent="service" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="name (STRING)" vertex="1">
+          <mxGeometry height="22" width="220" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="service_price" parent="service" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="price (FLOAT)" vertex="1">
+          <mxGeometry height="22" width="220" y="74" as="geometry" />
+        </mxCell>
+        <mxCell id="service_duration" parent="service" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="duration (STRING)" vertex="1">
+          <mxGeometry height="22" width="220" y="96" as="geometry" />
+        </mxCell>
+        <mxCell id="service_category" parent="service" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="category (ENUM: medical/wellness/spa)" vertex="1">
+          <mxGeometry height="22" width="220" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" edge="1" parent="1" source="booking" style="endArrow=ERmany;startArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeWidth=2;fontSize=14;fontStyle=1" target="service">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="520" as="sourcePoint" />
+            <mxPoint x="800" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x0L_NmFNhFrySg8KyMSa-16" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="470" y="480" as="sourcePoint" />
+            <mxPoint x="520" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x0L_NmFNhFrySg8KyMSa-17" edge="1" parent="1" source="user_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.184;entryY=0.02;entryDx=0;entryDy=0;entryPerimeter=0;" target="booking">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x0L_NmFNhFrySg8KyMSa-18" edge="1" parent="1" source="room_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.662;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="booking">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

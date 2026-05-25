@@ -1,0 +1,124 @@
+<%- include('../partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, #2c6e49, #1e4a32);">
+            <h2>Управление врачами</h2>
+            <p>Добавление, редактирование и удаление информации о врачах</p>
+            <a href="/doctors" class="btn btn-gold" style="margin-top: 1rem;">Вернуться к списку врачей</a>
+        </div>
+
+        <div class="admin-form" style="background: var(--white); padding: 1.5rem; border-radius: 20px; margin-bottom: 2rem; box-shadow: var(--shadow);">
+            <h3>Добавить нового врача</h3>
+            <form action="/admin/doctors/add" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label>ФИО врача *</label>
+                    <input type="text" name="name" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Должность *</label>
+                    <input type="text" name="position" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Квалификация / Категория</label>
+                    <input type="text" name="qualification" placeholder="например: Высшая категория" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Стаж (лет)</label>
+                    <input type="number" name="experience" step="1" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Порядок отображения</label>
+                    <input type="number" name="order" value="0" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>Описание</label>
+                    <textarea name="description" rows="2" placeholder="Образование, специализация, достижения..." style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;"></textarea>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Добавить врача</button>
+                </div>
+            </form>
+        </div>
+
+        <h3>Список врачей</h3>
+        <div class="doctors-table" style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow);">
+                <thead style="background: #2c6e49; color: white;">
+                    <tr>
+                        <th style="padding: 12px; text-align: left;">ID</th>
+                        <th style="padding: 12px; text-align: left;">ФИО</th>
+                        <th style="padding: 12px; text-align: left;">Должность</th>
+                        <th style="padding: 12px; text-align: left;">Квалификация</th>
+                        <th style="padding: 12px; text-align: left;">Стаж</th>
+                        <th style="padding: 12px; text-align: left;">Порядок</th>
+                        <th style="padding: 12px; text-align: center;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (doctors && doctors.length) { %>
+                        <% doctors.forEach(doctor => { %>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <form action="/admin/doctors/edit/<%= doctor.id %>" method="POST" style="display: contents;">
+                                    <td style="padding: 12px;"><%= doctor.id %></td>
+                                    <td style="padding: 12px;">
+                                        <input type="text" name="name" value="<%= doctor.name %>" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <input type="text" name="position" value="<%= doctor.position %>" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <input type="text" name="qualification" value="<%= doctor.qualification || '' %>" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <input type="number" name="experience" value="<%= doctor.experience || '' %>" style="width: 70px; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                    </td>
+                                    <td style="padding: 12px;">
+                                        <input type="number" name="order" value="<%= doctor.order || 0 %>" style="width: 60px; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                    </td>
+                                    <td style="padding: 12px; text-align: center;">
+                                        <textarea name="description" style="display: none;"><%= doctor.description || '' %></textarea>
+                                        <button type="submit" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-right: 5px;">Сохранить</button>
+                                </form>
+                                <form action="/admin/doctors/delete/<%= doctor.id %>" method="POST" style="display: inline-block;">
+                                    <button type="submit" onclick="return confirm('Удалить врача \'<%= doctor.name %>\'?')" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Удалить</button>
+                                </form>
+                                    </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="7" style="padding: 20px; text-align: center; color: #666;">Нет добавленных врачей</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<style>
+    .admin-form input, .admin-form select, .admin-form textarea {
+        transition: all 0.3s ease;
+    }
+    
+    .admin-form input:focus, .admin-form select:focus, .admin-form textarea:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(44, 110, 73, 0.1);
+    }
+    
+    .doctors-table table {
+        border-collapse: collapse;
+    }
+    
+    .doctors-table tr:hover {
+        background: #f9f9f9;
+    }
+    
+    .doctors-table input {
+        font-family: inherit;
+    }
+</style>
+
+<%- include('../partials/footer') %>

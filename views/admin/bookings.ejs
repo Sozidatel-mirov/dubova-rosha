@@ -1,0 +1,189 @@
+<%- include('../partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, #2c6e49, #1e4a32);">
+            <h2>Управление бронированиями</h2>
+            <p>Просмотр, подтверждение, отклонение и удаление бронирований</p>
+            <a href="/admin/dashboard" class="btn btn-gold" style="margin-top: 1rem;">← Вернуться в админ-панель</a>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div class="stat-card" style="background: var(--white); padding: 1rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);">
+                <div style="font-size: 1.5rem;"></div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-green);"><%= stats.total %></div>
+                <div>Всего</div>
+            </div>
+            <div class="stat-card" style="background: var(--white); padding: 1rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);">
+                <div style="font-size: 1.5rem;"></div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #155724;"><%= stats.pending %></div>
+                <div>Ожидают</div>
+            </div>
+            <div class="stat-card" style="background: var(--white); padding: 1rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);">
+                <div style="font-size: 1.5rem;"></div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #155724;"><%= stats.confirmed %></div>
+                <div>Подтверждены</div>
+            </div>
+            <div class="stat-card" style="background: var(--white); padding: 1rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);">
+                <div style="font-size: 1.5rem;"></div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #155724;"><%= stats.cancelled %></div>
+                <div>Отменены</div>
+            </div>
+        </div>
+
+        <!-- Фильтры -->
+        <div class="filters" style="margin-bottom: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="filter-status-btn active" data-status="all">Все</button>
+            <button class="filter-status-btn" data-status="pending">Ожидают</button>
+            <button class="filter-status-btn" data-status="confirmed">Подтверждены</button>
+            <button class="filter-status-btn" data-status="cancelled">Отменены</button>
+        </div>
+
+        <!-- Список бронирований -->
+        <div class="bookings-list" style="background: var(--white); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead style="background: #2c6e49; color: white;">
+                    <tr>
+                        <th style="padding: 12px;">ID</th>
+                        <th style="padding: 12px;">Клиент</th>
+                        <th style="padding: 12px;">Номер</th>
+                        <th style="padding: 12px;">Даты</th>
+                        <th style="padding: 12px;">Сумма</th>
+                        <th style="padding: 12px;">Статус</th>
+                        <th style="padding: 12px;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (bookings && bookings.length) { %>
+                        <% bookings.forEach(booking => { %>
+                            <tr class="booking-row" data-status="<%= booking.status %>" style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 12px;"><%= booking.id %></td>
+                                <td style="padding: 12px;">
+                                    <strong><%= booking.User ? booking.User.name : 'Не указан' %></strong><br>
+                                    <small style="color: #666;"><%= booking.User ? booking.User.email : '' %></small><br>
+                                    <small style="color: #666;"><%= booking.User ? booking.User.phone : '' %></small>
+                                </td>
+                                <td style="padding: 12px;">
+                                    <%= booking.Room ? booking.Room.name : 'Не указан' %><br>
+                                    <small style="color: #666;">
+                                        <% if (booking.Room && booking.Room.type === 'standard') { %>Стандарт
+                                        <% } else if (booking.Room && booking.Room.type === 'improved') { %>Улучшенный
+                                        <% } else if (booking.Room && booking.Room.type === 'luxury') { %>Люкс
+                                        <% } %>
+                                    </small>
+                                </td>
+                                <td style="padding: 12px;">
+                                    <%= new Date(booking.checkIn).toLocaleDateString() %><br>
+                                    <small>→</small><br>
+                                    <%= new Date(booking.checkOut).toLocaleDateString() %>
+                                </td>
+                                <td style="padding: 12px; font-weight: bold; color: var(--primary-green);"><%= booking.totalPrice %>₽</td>
+                                <td style="padding: 12px;">
+                                    <span class="booking-status status-<%= booking.status %>" style="padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem;">
+                                        <% if (booking.status === 'pending') { %>Ожидает<% } %>
+                                        <% if (booking.status === 'confirmed') { %>Подтверждено<% } %>
+                                        <% if (booking.status === 'cancelled') { %>Отменено<% } %>
+                                    </span>
+                                </td>
+                                <td style="padding: 12px; padding-left: 5rem;">
+                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; padding-left: 3rem;">
+                                        <% if (booking.status === 'pending') { %>
+                                            <form action="/admin/bookings/confirm/<%= booking.id %>" method="POST" style="display: inline-block;">
+                                                <button type="submit" class="btn-success" style="background: #28a745; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;">Подтвердить</button>
+                                            </form>
+                                            <form action="/admin/bookings/reject/<%= booking.id %>" method="POST" style="display: inline-block;">
+                                                <button type="submit" class="btn-danger" style="background: #28a745; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;">Отклонить</button>
+                                            </form>
+                                        <% } %>
+                                        <!-- Кнопка удаления для всех бронирований -->
+                                        <form action="/admin/bookings/delete/<%= booking.id %>" method="POST" style="display: inline-block;" onsubmit="return confirm('Удалить бронирование #<%= booking.id %>? Это действие необратимо.');">
+                                            <button type="submit" class="btn-delete" style="background: #28a745; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;">Удалить</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="8" style="padding: 40px; text-align: center;">Нет бронирований</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+    const filterButtons = document.querySelectorAll('.filter-status-btn');
+    const bookingRows = document.querySelectorAll('.booking-row');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const status = btn.dataset.status;
+            
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            bookingRows.forEach(row => {
+                if (status === 'all' || row.dataset.status === status) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .filter-status-btn {
+        padding: 0.5rem 1.2rem;
+        background: var(--bg-light);
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .filter-status-btn.active,
+    .filter-status-btn:hover {
+        background: var(--primary-green);
+        color: white;
+    }
+    
+    .booking-status {
+        display: inline-block;
+    }
+    
+    .status-pending {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status-confirmed {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status-cancelled {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .btn-success:hover, .btn-danger:hover, .btn-delete:hover {
+        opacity: 0.8;
+    }
+    
+    @media (max-width: 768px) {
+        .bookings-list {
+            overflow-x: auto;
+        }
+        table {
+            min-width: 800px;
+        }
+    }
+</style>
+
+<%- include('../partials/footer') %>

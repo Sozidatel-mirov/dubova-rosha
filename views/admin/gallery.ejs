@@ -1,0 +1,121 @@
+<%- include('../partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, #2c6e49, #1e4a32);">
+            <h2>Управление галереей</h2>
+            <p>Добавление, редактирование и удаление изображений</p>
+            <a href="/gallery" class="btn btn-gold" style="margin-top: 1rem;">Вернуться к галерее</a>
+        </div>
+
+        <div class="admin-form" style="background: var(--white); padding: 1.5rem; border-radius: 20px; margin-bottom: 2rem; box-shadow: var(--shadow);">
+            <h3>Добавить изображение</h3>
+            <form action="/admin/gallery/add" method="POST" enctype="multipart/form-data" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label>Название *</label>
+                    <input type="text" name="title" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Категория</label>
+                    <select name="category" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                        <option value="territory">Территория</option>
+                        <option value="rooms">Номера</option>
+                        <option value="procedures">Процедуры</option>
+                        <option value="nature">Природа</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Порядок</label>
+                    <input type="number" name="order" value="0" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Изображение *</label>
+                    <input type="file" name="image" accept="image/*" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>Описание</label>
+                    <textarea name="description" rows="2" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 10px;"></textarea>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2.4rem;">Добавить изображение</button>
+                </div>
+            </form>
+        </div>
+        <h3>Все изображения</h3>
+        <div class="gallery-table" style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow);">
+                <thead style="background: #2c6e49; color: white;">
+                    <tr>
+                        <th style="padding: 12px;">ID</th>
+                        <th style="padding: 12px;">Превью</th>
+                        <th style="padding: 12px;">Название</th>
+                        <th style="padding: 12px;">Категория</th>
+                        <th style="padding: 12px;">Порядок</th>
+                        <th style="padding: 12px;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (allImages && allImages.length) { %>
+                        <% allImages.forEach(image => { %>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 12px;"><%= image.id %></td>
+                                <td style="padding: 12px;">
+                                    <img src="<%= image.filename %>" alt="<%= image.title %>" style="width: 60px; height: 60px; object-fit: cover; border-radius: 10px;">
+                                </td>
+                                <td style="padding: 12px;">
+                                    <form action="/admin/gallery/edit/<%= image.id %>" method="POST" style="display: inline;">
+                                        <input type="text" name="title" value="<%= image.title %>" style="width: 150px; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                </td>
+                                <td style="padding: 12px;">
+                                        <select name="category" style="padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                            <option value="territory" <%= image.category === 'territory' ? 'selected' : '' %>>Территория</option>
+                                            <option value="rooms" <%= image.category === 'rooms' ? 'selected' : '' %>>Номера</option>
+                                            <option value="procedures" <%= image.category === 'procedures' ? 'selected' : '' %>>Процедуры</option>
+                                            <option value="nature" <%= image.category === 'nature' ? 'selected' : '' %>>Природа</option>
+                                        </select>
+                                </td>
+                                <td style="padding: 12px;">
+                                        <input type="number" name="order" value="<%= image.order %>" style="width: 60px; padding: 6px; border: 1px solid #ddd; border-radius: 5px;">
+                                </td>
+                                <td style="padding: 12px; padding-left: 70px;">
+                                        <textarea name="description" style="display: none;"><%= image.description || '' %></textarea>
+                                        <button type="submit" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Сохранить</button>
+                                    </form>
+                                    <form action="/admin/gallery/delete/<%= image.id %>" method="POST" style="display: inline-block; margin-left: 5px;">
+                                        <button type="submit" onclick="return confirm('Удалить изображение?')" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Удалить</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="6" style="padding: 20px; text-align: center;">Нет изображений</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<style>
+    .admin-form input, .admin-form select, .admin-form textarea {
+        transition: all 0.3s ease;
+    }
+    
+    .admin-form input:focus, .admin-form select:focus, .admin-form textarea:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(44, 110, 73, 0.1);
+    }
+    
+    .gallery-table table {
+        border-collapse: collapse;
+    }
+    
+    .gallery-table tr:hover {
+        background: #f9f9f9;
+    }
+</style>
+
+<%- include('../partials/footer') %>

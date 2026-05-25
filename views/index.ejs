@@ -1,0 +1,95 @@
+<%- include('partials/header') %>
+<style>
+    .main-content {
+    position: relative;
+    z-index: 1;
+}
+    .features{
+        background-color: rgba(250, 235, 215, 0);
+    }
+    .services{
+        background-color: rgba(250, 235, 215, 0);
+    }
+
+
+</style>
+<main class="main-content">
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Ваш путь к здоровью и гармонии</h1>
+            <p>Современный медицинско-оздоровительный кластер в сердце природы</p>
+            <a href="/rooms" class="btn btn-gold">Забронировать путевку</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Почему выбирают нас?</h2>
+        <div class="features-container">
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Только современные технологии в реабилитации</h3>
+                <p>К услугам наших пациентов целый комплекс реабилитационных мероприятий.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Чистый воздух</h3>
+                <p>Чистый воздух, тишина, удаленность от трассы благоприятно влияют на восстановление сил и здоровья!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Живая природа</h3>
+                <p>Расположение в природном лесном массиве, на берегу реки Урал, в 20 км от города.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Многолетний опыт работы</h3>
+                <p>Весь наш опыт, знания и душу мы вкладываем в свою работу!</p>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <section class="services">
+        <h2>Наши услуги</h2>
+        <div class="services-container">
+            <% if (services && services.length) { %>
+                <% services.forEach(service => { %>
+                    <div class="service-card">
+                        <div class="service-icon"></div>
+                        <h3><%= service.name %></h3>
+                        <p><%= service.description %></p>
+                        <div class="service-price"><%= service.price %>₽</div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="service-card">
+                    <div class="service-icon"></div>
+                    <h3>Лечебный массаж</h3>
+                    <p>Классический и сегментарный массаж</p>
+                    <div class="service-price">1500₽</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"></div>
+                    <h3>Гидротерапия</h3>
+                    <p>Лечебные ванны и души</p>
+                    <div class="service-price">2000₽</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"></div>
+                    <h3>ЛФК</h3>
+                    <p>Лечебная физкультура</p>
+                    <div class="service-price">1000₽</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"></div>
+                    <h3>Фитотерапия</h3>
+                    <p>Травяные сборы и чаи</p>
+                    <div class="service-price">800₽</div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+</main>
+
+<%- include('partials/footer') %>

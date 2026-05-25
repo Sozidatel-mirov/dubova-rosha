@@ -1,0 +1,121 @@
+<%- include('../partials/header') %>
+
+<main>
+    <div class="profile-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div class="profile-header" style="background: linear-gradient(135deg, #2c6e49, #1e4a32);">
+            <h2>Панель врача</h2>
+            <p><%= doctor.name %> - <%= doctor.position %></p>
+            <a href="/profile" class="btn btn-gold" style="margin-top: 1rem;">← Вернуться в личный кабинет</a>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div class="stat-card" style="background: var(--white); padding: 1rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);">
+                <div style="font-size: 2rem;"></div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-green);"><%= doctorServices.length %></div>
+                <div>Моих услуг</div>
+            </div>
+            <div class="stat-card" style="background: var(--white); padding: 1rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow);">
+                <div style="font-size: 2rem;"></div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-green);"><%= patients.length %></div>
+                <div>Записей пациентов</div>
+            </div>
+        </div>
+
+        <!-- Мои услуги -->
+        <div class="my-services" style="margin-bottom: 2rem;">
+            <h3>Мои услуги</h3>
+            <div class="services-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <% doctorServices.forEach(service => { %>
+                    <div class="service-card-small" style="background: var(--bg-light); padding: 1rem; border-radius: 10px;">
+                        <strong><%= service.name %></strong>
+                        <div style="font-size: 0.85rem; color: #666;"><%= service.duration %></div>
+                        <div style="color: var(--primary-green); font-weight: bold;"><%= service.price %>₽</div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- Записанные пациенты -->
+        <h3>Записанные пациенты</h3>
+        <div class="patients-list" style="background: var(--white); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden;">
+            <% if (patients && patients.length) { %>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead style="background: #2c6e49; color: white;">
+                        <tr>
+                            <th style="padding: 12px;">Пациент</th>
+                            <th style="padding: 12px;">Услуги</th>
+                            <th style="padding: 12px;">Номер</th>
+                            <th style="padding: 12px;">Даты</th>
+                            <th style="padding: 12px;">Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% patients.forEach(patient => { %>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 12px;">
+                                    <strong><%= patient.patient ? patient.patient.name : 'Не указан' %></strong><br>
+                                    <small style="color: #666;"><%= patient.patient ? patient.patient.phone : '' %></small><br>
+                                    <small style="color: #666;"><%= patient.patient ? patient.patient.email : '' %></small>
+                                </td>
+                                <td style="padding: 12px;">
+                                    <% patient.services.forEach(service => { %>
+                                        <div><%= service.name %></div>
+                                    <% }) %>
+                                </td>
+                                <td style="padding: 12px;"><%= patient.room ? patient.room.name : 'Не указан' %></td>
+                                <td style="padding: 12px;">
+                                    <%= new Date(patient.checkIn).toLocaleDateString() %><br>
+                                    <small>→</small><br>
+                                    <%= new Date(patient.checkOut).toLocaleDateString() %>
+                                </td>
+                                <td style="padding: 12px;">
+                                    <span class="booking-status status-<%= patient.status %>" style="padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem;">
+                                        <% if (patient.status === 'pending') { %>Ожидает<% } %>
+                                        <% if (patient.status === 'confirmed') { %>Подтверждено<% } %>
+                                        <% if (patient.status === 'cancelled') { %>Отменено<% } %>
+                                    </span>
+                                </td>
+                                
+                             </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <div style="padding: 2rem; text-align: center;">Нет записанных пациентов</div>
+            <% } %>
+        </div>
+    </div>
+</main>
+
+<style>
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .status-confirmed {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status-cancelled {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    
+    .btn-success:hover, .btn-danger:hover, .btn-warning:hover {
+        opacity: 0.8;
+    }
+    
+    @media (max-width: 768px) {
+        .patients-list {
+            overflow-x: auto;
+        }
+        table {
+            min-width: 800px;
+        }
+    }
+</style>
+
+<%- include('../partials/footer') %>
