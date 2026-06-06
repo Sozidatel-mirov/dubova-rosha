@@ -64,7 +64,7 @@ router.post('/api/booked-dates', async (req, res) => {
             const end = new Date(booking.checkOut);
             let current = new Date(start);
             
-            while (current < end) {
+            while (current <= end) {
                 const dateStr = current.toISOString().split('T')[0];
                 if (!bookedDates.includes(dateStr)) {
                     bookedDates.push(dateStr);
